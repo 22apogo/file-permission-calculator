@@ -14,15 +14,42 @@
         <div class="container">
             <h1>Unix File Permission Calculator</h1>
             <div id="calculator">
-                <label>
-                    <input type="checkbox" id="readCheckbox"> Read
-                </label>
-                <label>
-                    <input type="checkbox" id="writeCheckbox"> Write
-                </label>
-                <label>
-                    <input type="checkbox" id="executeCheckbox"> Execute
-                </label>
+                <div id="userCalc">
+                    <p>User:</p>
+                    <label>
+                        <input type="checkbox" id="userReadCheckbox"> Read
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userWriteCheckbox"> Write
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userExecuteCheckbox"> Execute
+                    </label>
+                </div>
+                <div id="groupCalc">
+                    <p>Group:</p>
+                    <label>
+                        <input type="checkbox" id="groupReadCheckbox"> Read
+                    </label>
+                    <label>
+                        <input type="checkbox" id="groupWriteCheckbox"> Write
+                    </label>
+                    <label>
+                        <input type="checkbox" id="groupExecuteCheckbox"> Execute
+                    </label>
+                </div>
+                <div id="otherCalc">
+                    <p>Other:</p>
+                    <label>
+                        <input type="checkbox" id="otherReadCheckbox"> Read
+                    </label>
+                    <label>
+                        <input type="checkbox" id="otherWriteCheckbox"> Write
+                    </label>
+                    <label>
+                        <input type="checkbox" id="otherExecuteCheckbox"> Execute
+                    </label>
+                </div>
             </div>
             <button id="calculateButton">Calculate Permissions</button>
             <p id="resultOutput">File permissions: </p>
