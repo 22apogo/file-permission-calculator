@@ -7,50 +7,49 @@
 </head>
 <body>
     <header>
-
     
     </header>
     <main>
         <div class="container">
             <h1>Unix File Permission Calculator</h1>
-            <div id="calculator">
-                <div id="userCalc">
+            <section id="calculator">
+                <article id="userCalc">
                     <p>User:</p>
-                    <label>
+                    <label for="userReadCheckbox">
                         <input type="checkbox" id="userReadCheckbox"> Read
                     </label>
-                    <label>
+                    <label for="userWriteCheckbox">
                         <input type="checkbox" id="userWriteCheckbox"> Write
                     </label>
-                    <label>
+                    <label for="userExecuteCheckbox">
                         <input type="checkbox" id="userExecuteCheckbox"> Execute
                     </label>
-                </div>
-                <div id="groupCalc">
+                </article>
+                <article id="groupCalc">
                     <p>Group:</p>
-                    <label>
+                    <label for="groupReadCheckbox">
                         <input type="checkbox" id="groupReadCheckbox"> Read
                     </label>
-                    <label>
+                    <label for="groupWriteCheckbox">
                         <input type="checkbox" id="groupWriteCheckbox"> Write
                     </label>
-                    <label>
+                    <label for="groupExecuteCheckbox">
                         <input type="checkbox" id="groupExecuteCheckbox"> Execute
                     </label>
-                </div>
-                <div id="otherCalc">
+                </article>
+                <article id="otherCalc">
                     <p>Other:</p>
-                    <label>
+                    <label for="otherReadCheckbox">
                         <input type="checkbox" id="otherReadCheckbox"> Read
                     </label>
-                    <label>
+                    <label for="otherWriteCheckbox">
                         <input type="checkbox" id="otherWriteCheckbox"> Write
                     </label>
-                    <label>
+                    <label for="otherExecuteCheckbox">
                         <input type="checkbox" id="otherExecuteCheckbox"> Execute
                     </label>
-                </div>
-            </div>
+                </article>
+            </section>
             <button id="calculateButton">Calculate Permissions</button>
             <p id="resultOutput">File permissions: </p>
         </div>
@@ -61,5 +60,4 @@
     </footer>
     <script src="js/main.js"></script>
 </body>
-
 </html>
