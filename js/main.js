@@ -7,13 +7,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const calculateButton = document.getElementById('calculateButton');
     const resultOutput = document.getElementById('resultOutput');
 
+    calculateButton.addEventListener('click', calculatePermissions)
+
     function calculatePermissions() {
         const userPermissions = getUserPermissions();
         const groupPermissions = getGroupPermissions();
         const othersPermissions = getOthersPermissions();
 
-        resultOutput.textContent = `${userPermissions}${groupPermissions}${othersPermissions}`;
-
+        const result = `${userPermissions}${groupPermissions}${othersPermissions}`;
+        resultOutput.textContent = `${result}`;
     }
 
     function getUserPermissions(){
@@ -36,13 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update once more checkboxes are added
 
         const readPermission = readCheckbox.checked ? 'r' : '-';
-        const writePermissions = writeCheckbox.checked ? 'w' : '-';
-        const executePermissions = executeCheckbox.checked ? 'x' : '-';
+        const writePermission = writeCheckbox.checked ? 'w' : '-';
+        const executePermission = executeCheckbox.checked ? 'x' : '-';
 
-        return '${readPermission}${writePermissions}${executePermissions}';
+        return `${readPermission}${writePermission}${executePermission}`;
     }
-
-
-
-
 });
