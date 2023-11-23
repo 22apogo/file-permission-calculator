@@ -1,9 +1,19 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     // Event listeners here
-    const readCheckbox = document.getElementById('readCheckbox');
-    const writeCheckbox = document.getElementById('writeCheckbox');
-    const executeCheckbox = document.getElementById('executeCheckbox');
+    //user
+    const userReadCheckbox = document.getElementById('userReadCheckbox');
+    const userWriteCheckbox = document.getElementById('userWriteCheckbox');
+    const userExecuteCheckbox = document.getElementById('userExecuteCheckbox');
+    //group
+    const groupReadCheckbox = document.getElementById('groupReadCheckbox');
+    const groupWriteCheckbox = document.getElementById('groupWriteCheckbox');
+    const groupExecuteCheckbox = document.getElementById('groupExecuteCheckbox');
+    //other
+    const otherReadCheckbox = document.getElementById('otherReadCheckbox');
+    const otherWriteCheckbox = document.getElementById('otherWriteCheckbox');
+    const otherExecuteCheckbox = document.getElementById('otherExecuteCheckbox');
+    //
     const calculateButton = document.getElementById('calculateButton');
     const resultOutput = document.getElementById('resultOutput');
 
@@ -18,24 +28,22 @@ document.addEventListener('DOMContentLoaded', function () {
         resultOutput.textContent = `${result}`;
     }
 
+    // User permissions
     function getUserPermissions(){
-        return getPermissions(readCheckbox, writeCheckbox, executeCheckbox);
+        return getPermissions(userReadCheckbox, userWriteCheckbox, userExecuteCheckbox);
     }
 
-    // Update once new checkboxes are added
+    // Group Permissions
     function getGroupPermissions(){
-        // Returns string such as 'r--' for group's permissions
-        return '';
+        return getPermissions(groupReadCheckbox, groupWriteCheckbox, groupExecuteCheckbox);
     }
 
+    // Other Permissions
     function getOthersPermissions(){
-        // Returns string such as 'r--' for other's permissions
-        return '';
+        return getPermissions(otherReadCheckbox, otherWriteCheckbox, otherExecuteCheckbox);
     }
     
     function getPermissions(readCheckbox, writeCheckbox, executeCheckbox){
-
-        // Update once more checkboxes are added
 
         const readPermission = readCheckbox.checked ? 'r' : '-';
         const writePermission = writeCheckbox.checked ? 'w' : '-';
