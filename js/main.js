@@ -1,65 +1,79 @@
+document.addEventListener("DOMContentLoaded", function () {
+  // Event listeners here
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Event listeners here
-    //user checkboxes
-    const userReadCheckbox = document.getElementById('userReadCheckbox');
-    const userWriteCheckbox = document.getElementById('userWriteCheckbox');
-    const userExecuteCheckbox = document.getElementById('userExecuteCheckbox');
-    //group checkboxes
-    const groupReadCheckbox = document.getElementById('groupReadCheckbox');
-    const groupWriteCheckbox = document.getElementById('groupWriteCheckbox');
-    const groupExecuteCheckbox = document.getElementById('groupExecuteCheckbox');
-    //other checkboxes
-    const otherReadCheckbox = document.getElementById('otherReadCheckbox');
-    const otherWriteCheckbox = document.getElementById('otherWriteCheckbox');
-    const otherExecuteCheckbox = document.getElementById('otherExecuteCheckbox');
-    //
-    const filePermissionsInput = document.getElementById('filePermissionsInput');
+  // User checkboxes
+  const userReadCheckbox = document.getElementById("userReadCheckbox");
+  const userWriteCheckbox = document.getElementById("userWriteCheckbox");
+  const userExecuteCheckbox = document.getElementById("userExecuteCheckbox");
 
-    // Input listener to textbox
-    filePermissionsInput.addEventListener('input', updateCheckboxesFromInput);
-    
+  // Group checkboxes
+  const groupReadCheckbox = document.getElementById("groupReadCheckbox");
+  const groupWriteCheckbox = document.getElementById("groupWriteCheckbox");
+  const groupExecuteCheckbox = document.getElementById("groupExecuteCheckbox");
 
-    function updateCheckboxesFromInput(){
-        const inputPermissions = filePermissionsInput.value;
-        updateCheckboxes(inputPermissions);
-    }
+  // Other checkboxes
+  const otherReadCheckbox = document.getElementById("otherReadCheckbox");
+  const otherWriteCheckbox = document.getElementById("otherWriteCheckbox");
+  const otherExecuteCheckbox = document.getElementById("otherExecuteCheckbox");
 
-    function updateInputFromCheckboxes() {
-        const userPermissions = getUserPermissions();
-        const groupPermissions = getGroupPermissions();
-        const othersPermissions = getOthersPermissions();
+  // File permissions input
+  const filePermissionsInput = document.getElementById("filePermissionsInput");
 
-        const result = `${userPermissions}${groupPermissions}${othersPermissions}`;
-        filePermissionsInput.value = result;
-    }
+  // Input listener to textbox
+  filePermissionsInput.addEventListener("input", updateCheckboxesFromInput);
+  filePermissionsInput.addEventListener("keyup", updateCheckboxesFromInput); // Added this line to handle keyup events
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('click', updateInputFromCheckboxes);
-    });
+  function updateCheckboxesFromInput() {
+    const inputPermissions = filePermissionsInput.value;
+    updateCheckboxes(inputPermissions);
+  }
 
-    // User permissions
-    function getUserPermissions(){
-        return getPermissions(userReadCheckbox, userWriteCheckbox, userExecuteCheckbox);
-    }
+  function updateInputFromCheckboxes() {
+    const userPermissions = getUserPermissions();
+    const groupPermissions = getGroupPermissions();
+    const othersPermissions = getOthersPermissions();
 
-    // Group Permissions
-    function getGroupPermissions(){
-        return getPermissions(groupReadCheckbox, groupWriteCheckbox, groupExecuteCheckbox);
-    }
+    const result = `${userPermissions}${groupPermissions}${othersPermissions}`;
+    filePermissionsInput.value = result;
+  }
 
-    // Other Permissions
-    function getOthersPermissions(){
-        return getPermissions(otherReadCheckbox, otherWriteCheckbox, otherExecuteCheckbox);
-    }
-    
-    function getPermissions(readCheckbox, writeCheckbox, executeCheckbox){
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(function (checkbox) {
+    checkbox.addEventListener("click", updateInputFromCheckboxes);
+  });
 
-        const readPermission = readCheckbox.checked ? 'r' : '-';
-        const writePermission = writeCheckbox.checked ? 'w' : '-';
-        const executePermission = executeCheckbox.checked ? 'x' : '-';
+  // User permissions
+  function getUserPermissions() {
+    return getPermissions(
+      userReadCheckbox,
+      userWriteCheckbox,
+      userExecuteCheckbox
+    );
+  }
 
-        return `${readPermission}${writePermission}${executePermission}`;
-    }
+  // Group Permissions
+  function getGroupPermissions() {
+    return getPermissions(
+      groupReadCheckbox,
+      groupWriteCheckbox,
+      groupExecuteCheckbox
+    );
+  }
+
+  // Other Permissions
+  function getOthersPermissions() {
+    return getPermissions(
+      otherReadCheckbox,
+      otherWriteCheckbox,
+      otherExecuteCheckbox
+    );
+  }
+
+  function getPermissions(readCheckbox, writeCheckbox, executeCheckbox) {
+    const readPermission = readCheckbox.checked ? "r" : "-";
+    const writePermission = writeCheckbox.checked ? "w" : "-";
+    const executePermission = executeCheckbox.checked ? "x" : "-";
+
+    return `${readPermission}${writePermission}${executePermission}`;
+  }
 });
