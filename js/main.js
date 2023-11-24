@@ -1,32 +1,42 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     // Event listeners here
-    //user
+    //user checkboxes
     const userReadCheckbox = document.getElementById('userReadCheckbox');
     const userWriteCheckbox = document.getElementById('userWriteCheckbox');
     const userExecuteCheckbox = document.getElementById('userExecuteCheckbox');
-    //group
+    //group checkboxes
     const groupReadCheckbox = document.getElementById('groupReadCheckbox');
     const groupWriteCheckbox = document.getElementById('groupWriteCheckbox');
     const groupExecuteCheckbox = document.getElementById('groupExecuteCheckbox');
-    //other
+    //other checkboxes
     const otherReadCheckbox = document.getElementById('otherReadCheckbox');
     const otherWriteCheckbox = document.getElementById('otherWriteCheckbox');
     const otherExecuteCheckbox = document.getElementById('otherExecuteCheckbox');
     //
-    const calculateButton = document.getElementById('calculateButton');
-    const resultOutput = document.getElementById('resultOutput');
+    const filePermissionsInput = document.getElementById('filePermissionsInput');
 
-    calculateButton.addEventListener('click', calculatePermissions)
+    //Input listener to textbox
+    filePermissionsInput.addEventListener('input', updateCheckboxesFromInput);
 
-    function calculatePermissions() {
+    function updateCheckboxesFromInput(){
+        const inputPermissions = filePermissionsInput.value;
+        updateCheckboxes(inputPermissions);
+    }
+
+    function updateInputFromCheckboxes() {
         const userPermissions = getUserPermissions();
         const groupPermissions = getGroupPermissions();
         const othersPermissions = getOthersPermissions();
 
         const result = `${userPermissions}${groupPermissions}${othersPermissions}`;
-        resultOutput.textContent = `${result}`;
+        filePermissionsInput.value = result;
     }
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('click', updateInputFromCheckboxes);
+    });
 
     // User permissions
     function getUserPermissions(){
