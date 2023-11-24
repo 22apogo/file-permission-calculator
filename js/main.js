@@ -16,8 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
     //
     const filePermissionsInput = document.getElementById('filePermissionsInput');
 
-    //Input listener to textbox
+    // Input listener to textbox
     filePermissionsInput.addEventListener('input', updateCheckboxesFromInput);
+    
 
     function updateCheckboxesFromInput(){
         const inputPermissions = filePermissionsInput.value;
