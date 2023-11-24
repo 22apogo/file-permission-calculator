@@ -23,10 +23,18 @@ document.addEventListener('DOMContentLoaded', function () {
     filePermissionsInput.addEventListener('input', updateCheckboxesFromInput);
     filePermissionsInput.addEventListener('keyup', updateCheckboxesFromInput); // Added this line to handle keyup events
   
-    function updateCheckboxesFromInput() {
-      const inputPermissions = filePermissionsInput.value;
-      updateCheckboxes(inputPermissions);
-    }
+    // Checkboxes update input
+    userReadCheckbox.addEventListener('change', updateInputFromCheckboxes);
+    userWriteCheckbox.addEventListener('change', updateInputFromCheckboxes);
+    userExecuteCheckbox.addEventListener('change', updateInputFromCheckboxes);
+  
+    groupReadCheckbox.addEventListener('change', updateInputFromCheckboxes);
+    groupWriteCheckbox.addEventListener('change', updateInputFromCheckboxes);
+    groupExecuteCheckbox.addEventListener('change', updateInputFromCheckboxes);
+  
+    otherReadCheckbox.addEventListener('change', updateInputFromCheckboxes);
+    otherWriteCheckbox.addEventListener('change', updateInputFromCheckboxes);
+    otherExecuteCheckbox.addEventListener('change', updateInputFromCheckboxes);
   
     function updateInputFromCheckboxes() {
       const userPermissions = getUserPermissions();
@@ -37,42 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
       filePermissionsInput.value = result;
     }
   
-    // Update checkboxes based on input value
-    function updateCheckboxes(inputPermissions) {
-      const userPermissions = inputPermissions.slice(0, 3);
-      const groupPermissions = inputPermissions.slice(3, 6);
-      const othersPermissions = inputPermissions.slice(6, 9);
-  
-      updateUserCheckboxes(userPermissions);
-      updateGroupCheckboxes(groupPermissions);
-      updateOthersCheckboxes(othersPermissions);
+    function updateCheckboxesFromInput() {
+      const inputPermissions = filePermissionsInput.value;
+      updateCheckboxes(inputPermissions);
     }
-  
-    // Update user checkboxes
-    function updateUserCheckboxes(userPermissions) {
-      userReadCheckbox.checked = userPermissions[0] === 'r';
-      userWriteCheckbox.checked = userPermissions[1] === 'w';
-      userExecuteCheckbox.checked = userPermissions[2] === 'x';
-    }
-  
-    // Update group checkboxes
-    function updateGroupCheckboxes(groupPermissions) {
-      groupReadCheckbox.checked = groupPermissions[0] === 'r';
-      groupWriteCheckbox.checked = groupPermissions[1] === 'w';
-      groupExecuteCheckbox.checked = groupPermissions[2] === 'x';
-    }
-  
-    // Update other checkboxes
-    function updateOthersCheckboxes(othersPermissions) {
-      otherReadCheckbox.checked = othersPermissions[0] === 'r';
-      otherWriteCheckbox.checked = othersPermissions[1] === 'w';
-      otherExecuteCheckbox.checked = othersPermissions[2] === 'x';
-    }
-  
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(function (checkbox) {
-      checkbox.addEventListener('click', updateInputFromCheckboxes);
-    });
   
     // User permissions
     function getUserPermissions() {
