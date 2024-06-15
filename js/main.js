@@ -1,94 +1,67 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Event listeners
-  // User checkboxes
+  // Event listeners (using more descriptive variable names)
   const userReadCheckbox = document.getElementById("userReadCheckbox");
   const userWriteCheckbox = document.getElementById("userWriteCheckbox");
   const userExecuteCheckbox = document.getElementById("userExecuteCheckbox");
-
-  // Group checkboxes
   const groupReadCheckbox = document.getElementById("groupReadCheckbox");
   const groupWriteCheckbox = document.getElementById("groupWriteCheckbox");
   const groupExecuteCheckbox = document.getElementById("groupExecuteCheckbox");
-
-  // Other checkboxes
   const otherReadCheckbox = document.getElementById("otherReadCheckbox");
   const otherWriteCheckbox = document.getElementById("otherWriteCheckbox");
   const otherExecuteCheckbox = document.getElementById("otherExecuteCheckbox");
-
-  // File permissions character input
   const filePermissionsInputChar = document.getElementById("filePermissionsInputChar");
-
-  // File permissions Numerical input
   const filePermissionsInputNum = document.getElementById("filePermissionsInputNum");
 
-  // Input listener to character textbox
-  filePermissionsInputChar.addEventListener("input", updateCheckboxesFromInputChar);
-  filePermissionsInputChar.addEventListener("keyup", updateCheckboxesFromInputChar); // Added this line to handle keyup events
-
-  // Input listener to numerical textbox
-  filePermissionsInputNum.addEventListener("input", updateCheckboxesFromInputNum);
-  filePermissionsInputNum.addEventListener("keyup", updateCheckboxesFromInputNum); // Added this line to handle keyup events
-
-  // Checkboxes update character input
-  userReadCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-  userWriteCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-  userExecuteCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-
-  groupReadCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-  groupWriteCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-  groupExecuteCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-
-  otherReadCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-  otherWriteCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-  otherExecuteCheckbox.addEventListener("change", updateCharInputFromCheckboxes);
-
-  // Checkboxes update numerical input
-  userReadCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-  userWriteCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-  userExecuteCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-
-  groupReadCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-  groupWriteCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-  groupExecuteCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-
-  otherReadCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-  otherWriteCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-  otherExecuteCheckbox.addEventListener("change", updateNumInputFromCheckboxes);
-
-  //character
-  function updateCharInputFromCheckboxes() {
+  // Function to calculate and display permissions (combined for efficiency)
+  function updatePermissions() {
     const userPermissions = getUserPermissions();
     const groupPermissions = getGroupPermissions();
     const othersPermissions = getOthersPermissions();
+    const symbolicPermissions = `${userPermissions}${groupPermissions}${othersPermissions}`;
+    const numericPermissions = parseInt(symbolicPermissions.replace(/r/g, '4').replace(/w/g, '2').replace(/x/g, '1').replace(/-/g, '0'), 8);
 
-    const result = `${userPermissions}${groupPermissions}${othersPermissions}`;
-    filePermissionsInput.value = result;
-  }
-  
-  //numerical
-  function updateNumInputFromCheckboxes() {
-    const userPermissions = getUserPermissions();
-    const groupPermissions = getGroupPermissions();
-    const othersPermissions = getOthersPermissions();
-
-    const numPermissions = parseInt(userPermissions + groupPermissions + othersPermissions, 8);
-    filePermissionsInputNum.value = numPermissions;
+    filePermissionsInputChar.value = symbolicPermissions;
+    filePermissionsInputNum.value = numericPermissions;
   }
 
-  function updateCheckboxesFromInputChar(inputPermissions) {
-    updateUserCheckboxes(inputPermissions.slice(0, 3));
-    updateGroupCheckboxes(inputPermissions.slice(3, 6));
-    updateOthersCheckboxes(inputPermissions.slice(6, 9));
+  // Update from character input
+  function updateFromCharInput(event) {
+    const inputPermissions = event.target.value.toUpperCase(); 
+    if (inputPermissions.length === 9 && /^[rwx-]{9}$/.test(inputPermissions)) {
+      updateUserCheckboxes(inputPermissions.slice(0, 3));
+      updateGroupCheckboxes(inputPermissions.slice(3, 6));
+      updateOthersCheckboxes(inputPermissions.slice(6, 9));
+      // Update numeric input based on the updated checkboxes
+      updatePermissions(); 
+    }
   }
 
-  function updateCheckboxesFromInputNum() {
-    const numPermissions = parseInt(filePermissionsInputNum.value);
+  // Update from numeric input
+  function updateFromNumInput() {
+    let numPermissions = parseInt(filePermissionsInputNum.value, 10); // Parse as base 10
+    if (isNaN(numPermissions) || numPermissions < 0 || numPermissions > 511) {
+      // Handle invalid input (optional: display an error message)
+      return; 
+    }
     const permissions = numPermissions.toString(8).padStart(3, '0');
+    filePermissionsInputChar.value = permissions
+      .replace(/4/g, 'r---')
+      .replace(/5/g, 'r-x-')
+      .replace(/6/g, 'rw--')
+      .replace(/7/g, 'rwx-')
+      .replace(/2/g, '-w--')
+      .replace(/3/g, '-wx-')
+      .replace(/1/g, '--x-')
+      .replace(/0/g, '----');
 
-    filePermissionsInputChar.value = permissions;
-    updateCheckboxesFromInputChar(permissions);
+    updateFromCharInput({ target: { value: filePermissionsInputChar.value } }); // Update checkboxes based on converted permissions
   }
 
+  // Event listeners for input fields (using keyup for immediate response)
+  filePermissionsInputChar.addEventListener("keyup", updateFromCharInput);
+  filePermissionsInputNum.addEventListener("keyup", updateFromNumInput);
+
+  // ... (Rest of the code, including permission calculation and checkbox update functions, remains similar)
   // User permissions
   function getUserPermissions() {
     return getPermissions(
@@ -142,5 +115,16 @@ document.addEventListener("DOMContentLoaded", function () {
     otherExecuteCheckbox.checked = permissions.includes('x');
   };
 
+  // Initial call to updatePermissions to display default values 
+  updatePermissions(); 
 
+  // Attach event listeners to checkboxes to trigger updates
+  const checkboxes = [
+    userReadCheckbox, userWriteCheckbox, userExecuteCheckbox,
+    groupReadCheckbox, groupWriteCheckbox, groupExecuteCheckbox,
+    otherReadCheckbox, otherWriteCheckbox, otherExecuteCheckbox
+  ];
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", updatePermissions);
+  });
 });
